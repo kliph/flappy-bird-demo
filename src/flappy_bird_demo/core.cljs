@@ -184,7 +184,7 @@
              [:h1.score score]
              (if-not timer-running
                [:a.start-button {:onClick #(start-game)}
-                (if (< 1 jump-count) "RESTART" "START")]
+                (if (< 1 jump-count) "REDO ART" "DO ART")]
                [:span])
              [:div (map pillar pillar-list)]
              [:div.flappy {:style {:top (px flappy-y)}}]

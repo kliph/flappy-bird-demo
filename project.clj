@@ -6,9 +6,12 @@
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.9.293"]
                  [org.clojure/core.async "0.2.395"]
-                 [cljsjs/react-dom-server "15.3.1-0"]  ;; for sablono
-                 [cljsjs/react-dom "15.3.1-0"] ;; for sablono
-                 [cljsjs/react "15.3.1-0"] ;; for sablono
+                 [cljsjs/react-dom-server "15.3.1-0"] ;; for sablono
+                 [cljsjs/react-dom "15.3.1-0"]        ;; for sablono
+                 [cljsjs/react "15.3.1-0"]            ;; for sablono
+                 [com.cemerick/piggieback "0.2.2"]
+                 [figwheel-sidecar "0.5.15-SNAPSHOT"]
+                 [binaryage/devtools "0.9.4"]
                  [sablono "0.7.5"]]
 
   :plugins [[lein-cljsbuild "1.1.4"
@@ -22,16 +25,16 @@
   :source-paths ["src"]
 
   :cljsbuild {
-    :builds [{:id "flappy-bird-demo"
-              :source-paths ["src"]
-              :figwheel true
-              :compiler {
-                         :main flappy-bird-demo.core
-                         :asset-path "js/out"
-                         :output-to "resources/public/js/flappy_bird_demo.js"
-                         :output-dir "resources/public/js/out"
-                         :source-map-timestamp true}}]}
+              :builds [{:id "flappy-bird-demo"
+                        :source-paths ["src"]
+                        :figwheel true
+                        :compiler {
+                                   :main flappy-bird-demo.core
+                                   :asset-path "js/out"
+                                   :output-to "resources/public/js/flappy_bird_demo.js"
+                                   :output-dir "resources/public/js/out"
+                                   :source-map-timestamp true}}]}
 
   :figwheel { :css-dirs ["resources/public/css"]
-              :open-file-command "emacsclient"
+             :open-file-command "emacsclient"
              })

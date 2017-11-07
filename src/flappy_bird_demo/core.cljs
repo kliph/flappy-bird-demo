@@ -7,6 +7,14 @@
   (:require-macros
    [cljs.core.async.macros :refer [go-loop go]]))
 
+;;; Set the stage
+;;; Button text
+;;; Sine wave
+;;; Jump velocity
+;;; Turn on pillars
+;;; horiz vel
+;;; Turn on game logic
+
 (enable-console-print!)
 
 (defn floor [x] (.floor js/Math x))
@@ -14,16 +22,16 @@
 (defn translate [start-pos vel time]
   (floor (+ start-pos (* time vel))))
 
-(def horiz-vel -0.15)
+(def horiz-vel -0.05)                   ; -0.15
 (def gravity 0.05)
-(def jump-vel 21)
+(def jump-vel 41)                       ; 21
 (def start-y 312)
 (def bottom-y 561)
 (def flappy-x 212)
 (def flappy-width 57)
 (def flappy-height 41)
 (def pillar-spacing 324)
-(def pillar-gap 158) ;; 158
+(def pillar-gap 358)                    ; 158
 (def pillar-width 86)
 
 (def starting-state { :timer-running false
@@ -92,10 +100,15 @@
                   (:cur-x (last pillars-in-world)))))
         pillars-in-world))))
 
-(defn sine-wave [st]
+#_(defn sine-wave [{:keys [time-delta] :as st}]
   (assoc st
     :flappy-y
-    (+ start-y (* 30 (.sin js/Math (/ (:time-delta st) 300))))))
+    (+ start-y (* 30 (.sin js/Math (/ (time-delta st) 300))))))
+
+(defn sine-wave [s]
+  (assoc s
+         :flappy-y
+         (+ start-y (* 30 (.sin js/Math (/ (:time-delta s) 300))))))
 
 (defn update-flappy [{:keys [time-delta initial-vel flappy-y jump-count] :as st}]
   (if (pos? jump-count)
@@ -121,8 +134,8 @@
           :time-delta (- timestamp (:flappy-start-time state)))
       update-flappy
       update-pillars
-      collision?
-      score))
+      #_collision?
+      #_score))
 
 (defn jump [{:keys [cur-time jump-count] :as state}]
   (-> state
@@ -181,14 +194,14 @@
   (sab/html [:div.board { :onMouseDown (fn [e]
                                          (swap! flap-state jump)
                                          (.preventDefault e))}
-             [:h1.score score]
+             #_[:h1.score score]
              (if-not timer-running
                [:a.start-button {:onClick #(start-game)}
                 (if (< 1 jump-count) "REDO ART" "DO ART")]
                [:span])
              [:div (map pillar pillar-list)]
-             [:div.flappy {:style {:top (px flappy-y)}}]
-             [:div.scrolling-border {:style { :background-position-x (px border-pos)}}]]))
+             #_[:div.flappy {:style {:top (px flappy-y)}}]
+             #_[:div.scrolling-border {:style { :background-position-x (px border-pos)}}]]))
 
 (let [node (.getElementById js/document "board-area")]
   (defn renderer [full-state]
